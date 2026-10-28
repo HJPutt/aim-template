@@ -1,208 +1,193 @@
+aim_template.py
+
 import streamlit as st
 from datetime import date
 
-
 st.set_page_config(
-    page_title="Developing your aim",
-    page_icon="🎯",
-    layout="wide"
+    page_title="Collaboration Hub | Aim Builder",
+    page_icon="🎯"
 )
 
-
-# ---------------------------------------------------------
-# CUSTOM STYLING
-# ---------------------------------------------------------
-
-st.markdown("""
-<style>
-
-/* Main page */
-.stApp {
-    background-color: #ffffff;
-}
-
-/* Reduce blank space at top */
-.block-container {
-    padding-top: 2rem;
-    max-width: 1200px;
-}
-
-/* Main heading */
-h1 {
-    color: #1f4e79;
-    font-size: 42px !important;
-    font-weight: 700 !important;
-}
-
-/* Section headings */
-h2 {
-    color: #1f4e79;
-    margin-top: 10px !important;
-}
-
-/* Input boxes */
-div[data-baseweb="input"] {
-    border-radius: 8px;
-}
-
-/* Aim result */
-.aim-box {
-    background-color: #eaf3f8;
-    border-left: 8px solid #1f4e79;
-    border-radius: 10px;
-    padding: 24px;
-    margin-top: 25px;
-    font-size: 22px;
-    font-weight: 600;
-    color: #16324f;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-
-# ---------------------------------------------------------
-# TITLE
-# ---------------------------------------------------------
-
-st.title("Developing your aim")
+st.title("🎯 Developing your aim")
 
 st.write(
-    "Work through each section to create your improvement aim."
+    "Complete the sections below to build your improvement aim."
 )
 
+st.header("1. Why?")
 
-# ---------------------------------------------------------
-# WHY?
-# ---------------------------------------------------------
+st.write("What are you trying to improve?")
 
-st.header("WHY?")
+improve_health = st.checkbox("Improve health outcomes")
 
-col1, col2 = st.columns(2)
+improve_experience = st.checkbox("Improve patient experience")
 
-with col1:
-    health = st.checkbox("Improve health outcomes")
-    experience = st.checkbox("Improve patient experience")
+improve_colleague = st.checkbox("Improve colleague satisfaction")
 
-with col2:
-    colleague = st.checkbox("Improve colleague satisfaction")
-    costs = st.checkbox("Lower costs")
+lower_costs = st.checkbox("Lower costs")
 
-
-# ---------------------------------------------------------
-# WHAT?
-# ---------------------------------------------------------
-
-st.header("WHAT?")
+st.header("2. What?")
 
 direction = st.radio(
-    "What kind of improvement are you making?",
-    ["Improve", "Increase", "Decrease"],
-    horizontal=True
+    "What type of change are you aiming for?",
+    ["Improve", "Increase", "Decrease"]
 )
 
-what = st.text_input(
-    "What are you trying to change?",
+measure_name = st.text_input(
+    "What do you want to change?",
     placeholder="e.g. average waiting time"
 )
 
+st.header("3. For whom?")
 
-# ---------------------------------------------------------
-# FOR WHOM?
-# ---------------------------------------------------------
-
-st.header("FOR WHOM?")
-
-who = st.text_input(
-    "Who will benefit?",
+stakeholder = st.text_input(
+    "Who is affected by the improvement?",
     placeholder="e.g. patients attending the Surgical Decisions Unit"
 )
 
+st.header("4. How much?")
 
-# ---------------------------------------------------------
-# SYSTEM / SCOPE
-# ---------------------------------------------------------
-
-st.header("SYSTEM / SCOPE")
-
-scope = st.text_input(
-    "Where will the improvement happen?",
-    placeholder="e.g. Surgical Decisions Unit"
+baseline = st.text_input(
+    "What is the current position?",
+    placeholder="e.g. 120 minutes"
 )
 
+target = st.text_input(
+    "What is the target?",
+    placeholder="e.g. 90 minutes"
+)
 
-# ---------------------------------------------------------
-# HOW MUCH?
-# ---------------------------------------------------------
-
-st.header("HOW MUCH?")
-
-current_col, arrow_col, target_col = st.columns([5, 1, 5])
-
-with current_col:
-    current = st.text_input(
-        "Current position",
-        placeholder="e.g. 120 minutes"
-    )
-
-with arrow_col:
-    st.markdown(
-        "<div style='text-align:center; padding-top:35px;"
-        "font-size:30px;'>→</div>",
-        unsafe_allow_html=True
-    )
-
-with target_col:
-    target = st.text_input(
-        "Target",
-        placeholder="e.g. 90 minutes"
-    )
-
-
-# ---------------------------------------------------------
-# BY WHEN?
-# ---------------------------------------------------------
-
-st.header("BY WHEN?")
+st.header("5. By when?")
 
 target_date = st.date_input(
-    "Target date",
-    value=None
+    "Select your target date",
+    value=date.today()
 )
-
-
-# ---------------------------------------------------------
-# BUILD THE AIM
-# ---------------------------------------------------------
 
 st.divider()
 
-st.subheader("OUR AIM")
+st.header("Your Aim Statement")
 
-if what and who and current and target and target_date:
+if measure_name and stakeholder and baseline and target:
 
-    formatted_date = target_date.strftime("%d/%m/%Y")
-
-    aim = (
-        f"We will {direction.lower()} {what} "
-        f"for {who}"
+    aim_statement = (
+        f"We will {direction.lower()} {measure_name} "
+        f"for {stakeholder} "
+        f"from {baseline} to {target} "
+        f"by {target_date.strftime('%d/%m/%Y')}."
     )
 
-    if scope:
-        aim += f" within {scope}"
-
-    aim += (
-        f" from {current} to {target} "
-        f"by {formatted_date}."
-    )
-
-    st.markdown(
-        f'<div class="aim-box">{aim}</div>',
-        unsafe_allow_html=True
-    )
+    st.success(aim_statement)
 
 else:
 
     st.info(
-        "Complete the sections above to generate your aim."
+        "Complete the fields above to generate your aim statement."
     )
+
+    import streamlit as st
+from datetime import date
+
+
+st.set_page_config(
+    page_title="Collaboration Hub | Aim Builder",
+    page_icon="🎯"
+)
+
+
+st.title("🎯 Developing your aim")
+
+st.write(
+    "Complete the sections below to build your improvement aim."
+)
+
+
+# WHY
+
+st.header("1. Why?")
+
+st.write("What are you trying to improve?")
+
+improve_health = st.checkbox("Improve health outcomes")
+
+improve_experience = st.checkbox("Improve patient experience")
+
+improve_colleague = st.checkbox("Improve colleague satisfaction")
+
+lower_costs = st.checkbox("Lower costs")
+
+
+# WHAT
+
+st.header("2. What?")
+
+direction = st.radio(
+    "What type of change are you aiming for?",
+    ["Improve", "Increase", "Decrease"]
+)
+
+measure_name = st.text_input(
+    "What do you want to change?",
+    placeholder="e.g. average waiting time"
+)
+
+
+# FOR WHOM
+
+st.header("3. For whom?")
+
+stakeholder = st.text_input(
+    "Who is affected by the improvement?",
+    placeholder="e.g. patients attending the Surgical Decisions Unit"
+)
+
+
+# HOW MUCH
+
+st.header("4. How much?")
+
+baseline = st.text_input(
+    "What is the current position?",
+    placeholder="e.g. 120 minutes"
+)
+
+target = st.text_input(
+    "What is the target?",
+    placeholder="e.g. 90 minutes"
+)
+
+
+# BY WHEN
+
+st.header("5. By when?")
+
+target_date = st.date_input(
+    "Select your target date",
+    value=date.today()
+)
+
+
+# AIM STATEMENT
+
+st.divider()
+
+st.header("Your Aim Statement")
+
+if measure_name and stakeholder and baseline and target:
+
+    aim_statement = (
+        f"We will {direction.lower()} {measure_name} "
+        f"for {stakeholder} "
+        f"from {baseline} to {target} "
+        f"by {target_date.strftime('%d/%m/%Y')}."
+    )
+
+    st.success(aim_statement)
+
+else:
+
+    st.info(
+        "Complete the fields above to generate your aim statement."
+    )
+
+    
