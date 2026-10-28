@@ -1,153 +1,208 @@
-# Aim-Statement-Tool
-Aim Statement Tool
 import streamlit as st
 from datetime import date
 
 
-# ---------------------------------------------------------
-# PAGE SETUP
-# ---------------------------------------------------------
-
 st.set_page_config(
-    page_title="Collaboration Hub | Aim Builder",
+    page_title="Developing your aim",
     page_icon="🎯",
-    layout="centered"
+    layout="wide"
 )
 
-st.title("🎯 Developing your aim")
+
+# ---------------------------------------------------------
+# CUSTOM STYLING
+# ---------------------------------------------------------
+
+st.markdown("""
+<style>
+
+/* Main page */
+.stApp {
+    background-color: #ffffff;
+}
+
+/* Reduce blank space at top */
+.block-container {
+    padding-top: 2rem;
+    max-width: 1200px;
+}
+
+/* Main heading */
+h1 {
+    color: #1f4e79;
+    font-size: 42px !important;
+    font-weight: 700 !important;
+}
+
+/* Section headings */
+h2 {
+    color: #1f4e79;
+    margin-top: 10px !important;
+}
+
+/* Input boxes */
+div[data-baseweb="input"] {
+    border-radius: 8px;
+}
+
+/* Aim result */
+.aim-box {
+    background-color: #eaf3f8;
+    border-left: 8px solid #1f4e79;
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #16324f;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------
+# TITLE
+# ---------------------------------------------------------
+
+st.title("Developing your aim")
 
 st.write(
-    "Complete the sections below to build a clear improvement aim."
+    "Work through each section to create your improvement aim."
 )
 
 
 # ---------------------------------------------------------
-# 1. WHY?
+# WHY?
 # ---------------------------------------------------------
 
-st.header("1. Why?")
+st.header("WHY?")
 
-st.write("What are you trying to improve?")
+col1, col2 = st.columns(2)
 
-improve_health = st.checkbox("Improve health outcomes")
+with col1:
+    health = st.checkbox("Improve health outcomes")
+    experience = st.checkbox("Improve patient experience")
 
-improve_experience = st.checkbox("Improve patient experience")
-
-improve_colleague = st.checkbox("Improve colleague satisfaction")
-
-lower_costs = st.checkbox("Lower costs")
+with col2:
+    colleague = st.checkbox("Improve colleague satisfaction")
+    costs = st.checkbox("Lower costs")
 
 
 # ---------------------------------------------------------
-# 2. WHAT?
+# WHAT?
 # ---------------------------------------------------------
 
-st.header("2. What?")
+st.header("WHAT?")
 
 direction = st.radio(
-    "What type of change are you aiming for?",
+    "What kind of improvement are you making?",
     ["Improve", "Increase", "Decrease"],
     horizontal=True
 )
 
-measure_name = st.text_input(
-    "What do you want to change?",
+what = st.text_input(
+    "What are you trying to change?",
     placeholder="e.g. average waiting time"
 )
 
-measure_type = st.radio(
-    "How will it be measured?",
-    ["Number", "Amount", "Percentage"],
-    horizontal=True
-)
-
 
 # ---------------------------------------------------------
-# 3. FOR WHOM?
+# FOR WHOM?
 # ---------------------------------------------------------
 
-st.header("3. For whom?")
+st.header("FOR WHOM?")
 
-stakeholder = st.text_input(
-    "Who is affected by the improvement?",
+who = st.text_input(
+    "Who will benefit?",
     placeholder="e.g. patients attending the Surgical Decisions Unit"
 )
 
 
 # ---------------------------------------------------------
-# 4. SYSTEM / SCOPE
+# SYSTEM / SCOPE
 # ---------------------------------------------------------
 
-st.header("4. System / scope")
+st.header("SYSTEM / SCOPE")
 
-system = st.text_input(
-    "Where does this improvement apply?",
-    placeholder="e.g. Surgical Decisions Unit, Musgrove Park Hospital"
+scope = st.text_input(
+    "Where will the improvement happen?",
+    placeholder="e.g. Surgical Decisions Unit"
 )
 
 
 # ---------------------------------------------------------
-# 5. HOW MUCH?
+# HOW MUCH?
 # ---------------------------------------------------------
 
-st.header("5. How much?")
+st.header("HOW MUCH?")
 
-col1, col2 = st.columns(2)
+current_col, arrow_col, target_col = st.columns([5, 1, 5])
 
-with col1:
-    baseline = st.text_input(
+with current_col:
+    current = st.text_input(
         "Current position",
         placeholder="e.g. 120 minutes"
     )
 
-with col2:
+with arrow_col:
+    st.markdown(
+        "<div style='text-align:center; padding-top:35px;"
+        "font-size:30px;'>→</div>",
+        unsafe_allow_html=True
+    )
+
+with target_col:
     target = st.text_input(
-        "Target position",
+        "Target",
         placeholder="e.g. 90 minutes"
     )
 
 
 # ---------------------------------------------------------
-# 6. BY WHEN?
+# BY WHEN?
 # ---------------------------------------------------------
 
-st.header("6. By when?")
+st.header("BY WHEN?")
 
 target_date = st.date_input(
     "Target date",
-    value=date.today()
+    value=None
 )
 
 
 # ---------------------------------------------------------
-# GENERATE THE AIM
+# BUILD THE AIM
 # ---------------------------------------------------------
 
 st.divider()
 
-st.header("Your Aim Statement")
+st.subheader("OUR AIM")
 
-if measure_name and stakeholder and baseline and target:
+if what and who and current and target and target_date:
 
     formatted_date = target_date.strftime("%d/%m/%Y")
 
-    aim_statement = (
-        f"We will {direction.lower()} {measure_name} "
-        f"for {stakeholder}"
+    aim = (
+        f"We will {direction.lower()} {what} "
+        f"for {who}"
     )
 
-    if system:
-        aim_statement += f" within {system}"
+    if scope:
+        aim += f" within {scope}"
 
-    aim_statement += (
-        f" from {baseline} to {target} "
+    aim += (
+        f" from {current} to {target} "
         f"by {formatted_date}."
     )
 
-    st.success(aim_statement)
+    st.markdown(
+        f'<div class="aim-box">{aim}</div>',
+        unsafe_allow_html=True
+    )
 
 else:
+
     st.info(
-        "Complete the fields above and your aim statement "
-        "will appear here."
+        "Complete the sections above to generate your aim."
     )
